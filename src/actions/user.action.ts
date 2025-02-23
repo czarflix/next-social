@@ -26,9 +26,7 @@ export async function syncUser() {
         name: `${user.firstName || ""} ${user.lastName || ""}`,
         username:
           user.username ??
-          `${user.emailAddresses[0].emailAddress.split("@")[0]}${Math.floor(
-            1000 + Math.random() * 9000
-          )}`,
+          `${user.emailAddresses[0].emailAddress.split("@")[0]}`,
         email: user.emailAddresses[0].emailAddress,
         image: user.imageUrl,
       },
