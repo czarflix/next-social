@@ -16,13 +16,13 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { useState } from "react";
-import { useAuth, SignInButton, SignOutButton } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import ModeToggle from "./ModeToggle";
 
 function MobileNavbar() {
+  const { user } = useUser(); // ✅ Use useUser() inside a normal function
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const { isSignedIn } = useAuth();
 
   return (
     <div className="flex md:hidden items-center space-x-2">
@@ -55,7 +55,7 @@ function MobileNavbar() {
               </Button>
             </SheetClose>
 
-            {isSignedIn ? (
+            {user ? (
               <>
                 <SheetClose asChild>
                   <Button
@@ -78,7 +78,12 @@ function MobileNavbar() {
                     className="flex items-center gap-3 justify-start"
                     asChild
                   >
-                    <Link href="/profile">
+                    <Link
+                      href={`/profile/${
+                        user.username ??
+                        user.emailAddresses?.[0]?.emailAddress.split("@")[0]
+                      }`}
+                    >
                       <UserIcon className="w-4 h-4" />
                       Profile
                     </Link>
